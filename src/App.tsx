@@ -9,7 +9,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Stack from 'react-bootstrap/Stack';
 
-import {Timer} from './components/countdown-timer';
+import { Timer } from './components/countdown-timer';
+import { Scoreboard } from './components/scoreboard';
 
 import './App.css';
 
@@ -62,9 +63,11 @@ function QuizRoomRow({ room }) {
 function App() {
   const [key, setKey] = useState(0);
   const [play, setPlay] = useState(0);
+  const [key2, setKey2] = useState(0);
+  const [play2, setPlay2] = useState(0);
 
   const time = new Date();
-  time.setSeconds(time.getSeconds() + 600); // 10 minutes timer
+  time.setSeconds(time.getSeconds() + 900); // 15 minutes timer
 
   return (
     <div className="App">
@@ -73,44 +76,80 @@ function App() {
         <h1 className="header">
           QuizBowl
         </h1>
-        <Container className="p-5 mb-4 bg-light rounded-3">
-      <Row className="mx-auto">
-        <Col md={6} className="my-auto">
-        <QuizRoundButton />
+        <Container className="p-5 mb-4 bg-light rounded-3 text-center">
+          <Row className="m-auto">
+            <Col className="text-center justify-content-center">
+              <QuizRoundButton />
+              { /*Round Timer */}
+              <Timer expiryTimestamp={time} />
 
-        <Timer expiryTimestamp={time}/>
-        </Col>
-        <Col md={6} className="mx-auto">
-          <Stack gap={3}>
-          <CountdownCircleTimer
-            key={key}
-            isPlaying={play}
-            duration={10}
-            colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
-            colorsTime={[10, 6, 3, 0]}
-            onComplete={() => ({ shouldRepeat: true, delay: 1 })}
-          >
-            {renderTime}
-          </CountdownCircleTimer>
+            </Col>
+            { /* Spacer Column */}
+            <Col></Col>
 
-          <Stack direction="horizontal" gap={1}>
-          <button onClick={() => !play ? setPlay(true) : setPlay(false)}>
-            {play ? "Pause" : "Start"}
-          </button>
-          <button onClick={() => setKey(prevKey => prevKey + 1)}>
-            Restart
-          </button>
-          </Stack>
-          </Stack>
-  
-        </Col>
-      </Row>
-      </Container>
-      <Row>
-        <div className="footer">
-          Hosted by ESU3
-        </div>
-      </Row>
+            { /* Question Timers - Top: 20sec, Bottom: 10sec */}
+            <Col className="text-center justify-content-center">
+            <Stack gap={3}>
+                <CountdownCircleTimer
+                  key={key}
+                  isPlaying={play}
+                  duration={20}
+                  colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
+                  colorsTime={[20, 15, 10, 0]}
+                  onComplete={() => ({ shouldRepeat: true, delay: 1 })}
+                >
+                  {renderTime}
+                </CountdownCircleTimer>
+                <div className="ms-4">
+                <Stack direction="horizontal" gap={1}>
+                  <button onClick={() => !play ? setPlay(true) : setPlay(false)}>
+                    {play ? "Pause" : "Start"}
+                  </button>
+                  <button onClick={() => setKey(prevKey => prevKey + 1)}>
+                    Restart
+                  </button>      
+                </Stack>
+                </div>
+              </Stack>
+            </Col>
+            { /* 10sec Question Timer */}
+            <Col className="text-center justify-content-center">
+              <Stack gap={3}>
+                <CountdownCircleTimer
+                  key={key2}
+                  isPlaying={play2}
+                  duration={10}
+                  colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
+                  colorsTime={[10, 6, 3, 0]}
+                  onComplete={() => ({ shouldRepeat: true, delay: 1 })}
+                >
+                  {renderTime}
+                </CountdownCircleTimer>
+                <div className="ms-4">
+                <Stack direction="horizontal" gap={1}>
+                  <button onClick={() => !play2 ? setPlay2(true) : setPlay2(false)}>
+                    {play2 ? "Pause" : "Start"}
+                  </button>
+                  <button onClick={() => setKey2(prevKey => prevKey + 1)}>
+                    Restart
+                  </button>      
+                </Stack>
+                </div>
+              </Stack>
+              
+            </Col>
+          </Row>
+        </Container>
+        <Row>
+        { /* Scoreboard */}
+        <Scoreboard/>
+
+        </Row>
+        <Row>
+          <div className="footer">
+            Hosted by ESU3
+          </div>
+        </Row>
       </Container>
     </div>
   );
