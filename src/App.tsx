@@ -71,15 +71,17 @@ function App() {
 
   return (
     <div className="App">
-      <Container className="p-3">
-
+      <Container className="p-1">
         <h1 className="header">
           QuizBowl
         </h1>
-        <Container className="p-5 mb-4 bg-light rounded-3 text-center">
+        <Container className="p-3 mb-4 bg-light rounded-3 text-center">
+          <Row className="text-center">
+              <h3>Room Name</h3>
+            </Row>
+          <hr/>
           <Row className="m-auto">
             <Col className="text-center justify-content-center">
-              <QuizRoundButton />
               { /*Round Timer */}
               <Timer expiryTimestamp={time} />
 
@@ -139,12 +141,14 @@ function App() {
               
             </Col>
           </Row>
-        </Container>
-        <Row>
+          <Row></Row>
+          <Row>
         { /* Scoreboard */}
         <Scoreboard/>
 
         </Row>
+        </Container>
+
         <Row>
           <div className="footer">
             Hosted by ESU3
