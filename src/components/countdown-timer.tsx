@@ -12,7 +12,7 @@ export function Timer({ expiryTimestamp }) {
         pause,
         resume,
         restart,
-    } = useTimer({ expiryTimestamp, onExpire: () => console.warn('onExpire called') });
+    } = useTimer({ expiryTimestamp, onExpire: () => console.warn('onExpire called'),autoStart: false });
 
 
     return (

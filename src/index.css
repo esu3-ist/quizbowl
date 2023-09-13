@@ -11,3 +11,22 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/*SVG ICON SYSTEM*/
+.icon {
+  display: inline-flex;
+  align-self: center;
+}
+
+.icon svg, .icon img {
+  height: .75em;
+  width: .75em;
+  fill: currentColor;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.icon.baseline svg, .icon img {
+  top: .125em;
+  position: relative;
+}

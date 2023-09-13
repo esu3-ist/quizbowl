@@ -8,9 +8,14 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Stack from 'react-bootstrap/Stack';
+import Modal from 'react-bootstrap/Modal';
 
 import { Timer } from './components/countdown-timer';
 import { Scoreboard } from './components/scoreboard';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+
 
 import './App.css';
 
@@ -28,43 +33,19 @@ const renderTime = ({ remainingTime }) => {
   );
 };
 
-function QuizRoundButton() {
-  return (
-    <>
-      <Button onClick={() => doSomething()}>Start Round</Button>
-    </>
-  )
-}
-
-function RoundTimer() {
-  <div className="timer">
-    Round Timer
-  </div>
-}
-
-function SettingsRow() {
-  return (
-    <div>
-      Settings
-    </div>
-  )
-}
-
-function QuizRoomRow({ room }) {
-  return (
-    <tr>
-      <th>
-        {room}
-      </th>
-    </tr>
-  )
-}
 
 function App() {
   const [key, setKey] = useState(0);
   const [play, setPlay] = useState(0);
   const [key2, setKey2] = useState(0);
   const [play2, setPlay2] = useState(0);
+
+  const [show, setShow] = useState(false);
+  const [roomName, setRoomName] = useState('Room Name');
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
 
   const time = new Date();
   time.setSeconds(time.getSeconds() + 900); // 15 minutes timer
@@ -77,7 +58,17 @@ function App() {
         </h1>
         <Container className="p-3 mb-4 bg-light rounded-3 text-center">
           <Row className="text-center">
-              <h3>Room Name</h3>
+              <div>
+                <h3>{roomName}
+                  <div className="icon baseline">
+                    <FontAwesomeIcon 
+                      icon={faCirclePlus}
+                      onClick={handleShow}
+                      rotation={90}/>
+                  </div>
+                </h3>
+               
+              </div>
             </Row>
           <hr/>
           <Row className="m-auto">
@@ -98,7 +89,7 @@ function App() {
                   duration={20}
                   colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
                   colorsTime={[20, 15, 10, 0]}
-                  onComplete={() => ({ shouldRepeat: true, delay: 1 })}
+                  onComplete={() => ({ shouldRepeat: false, delay: 1 })}
                 >
                   {renderTime}
                 </CountdownCircleTimer>
@@ -123,7 +114,7 @@ function App() {
                   duration={10}
                   colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
                   colorsTime={[10, 6, 3, 0]}
-                  onComplete={() => ({ shouldRepeat: true, delay: 1 })}
+                  onComplete={() => ({ shouldRepeat: false, delay: 1 })}
                 >
                   {renderTime}
                 </CountdownCircleTimer>
@@ -155,6 +146,25 @@ function App() {
           </div>
         </Row>
       </Container>
+      <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Change Room Name</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Room Name: <input 
+                    type="text" 
+                    defaultValue={roomName} 
+                    name="roomName" 
+                    onChange={e => setRoomName(e.target.value)}
+                    />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+
+                </Modal.Footer>
+            </Modal>
     </div>
   );
 }
