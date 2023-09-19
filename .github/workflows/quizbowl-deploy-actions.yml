@@ -1,5 +1,5 @@
-name: learn-github-actions
-run-name: ${{ github.actor }} is learning Github Actions
+name: quizbowl-build-deploy
+run-name: ${{ github.actor }} running build/deploy
 on: [push]
 jobs:
     check-bats-version:
@@ -8,9 +8,9 @@ jobs:
             - uses: actions/checkout@v3
             - uses: actions/setup-node@v3
               with:
-                node-version: '14'
-            - run: npm install -g bats
-            - run: bats -v
+                node-version: '18'
+            - run: npm ci
+            - run: npm run build
             - name: Post to a Slack channel
               id: slack
               uses: slackapi/slack-github-action@v1.24.0

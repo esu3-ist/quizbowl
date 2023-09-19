@@ -1,14 +1,10 @@
-import React from 'react';
 import { useTimer } from 'react-timer-hook';
 import Stack from 'react-bootstrap/Stack';
 
 export function Timer({ expiryTimestamp }) {
     const {
-        totalSeconds,
         seconds,
         minutes,
-        isRunning,
-        start,
         pause,
         resume,
         restart,
@@ -24,16 +20,14 @@ export function Timer({ expiryTimestamp }) {
             <div className="text-center justify-content-center ms-5">
             <Stack direction="horizontal" gap={1}>
                 
-                    <button onClick={start}>Start</button>
+                    <button onClick={resume}>Start</button>
                     <button onClick={pause}>Pause</button>
-                    <button onClick={resume}>Resume</button>
                     <button onClick={() => {
                         // Restarts to 15 minutes timer
                         const time = new Date();
                         time.setSeconds(time.getSeconds() + 900);
-                        restart(time)
+                        restart(time, false)
                     }}>Restart</button>
-                
             </Stack>
             </div>
         </div>

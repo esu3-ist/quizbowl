@@ -1,8 +1,8 @@
 // @ts-nocheck
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 
 
-import { CountdownCircleTimer, Utils } from 'react-countdown-circle-timer';
+import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
