@@ -33,7 +33,6 @@ const renderTime = ({ remainingTime }) => {
   );
 };
 
-
 function App() {
   const [key, setKey] = useState(0);
   const [play, setPlay] = useState(0);
@@ -46,6 +45,15 @@ function App() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  async function handleRestart(prevKey, timerNum) {
+    if (timerNum === 1){
+    setKey(prevKey = prevKey + 1);
+    setPlay(false);
+    } else {
+    setKey2(prevKey = prevKey + 1);
+    setPlay2(false);
+    }    
+  }
 
   const time = new Date();
   time.setSeconds(time.getSeconds() + 900); // 15 minutes timer
@@ -98,13 +106,14 @@ function App() {
                   <button onClick={() => !play ? setPlay(true) : setPlay(false)}>
                     {play ? "Pause" : "Start"}
                   </button>
-                  <button onClick={() => setKey(prevKey => prevKey + 1)}>
+                  <button onClick={() => handleRestart(key, 1)}>
                     Restart
                   </button>      
                 </Stack>
                 </div>
               </Stack>
             </Col>
+
             { /* 10sec Question Timer */}
             <Col className="text-center justify-content-center">
               <Stack gap={3}>
@@ -123,7 +132,7 @@ function App() {
                   <button onClick={() => !play2 ? setPlay2(true) : setPlay2(false)}>
                     {play2 ? "Pause" : "Start"}
                   </button>
-                  <button onClick={() => setKey2(prevKey => prevKey + 1)}>
+                  <button onClick={() => handleRestart(key, 2)}>
                     Restart
                   </button>      
                 </Stack>
@@ -142,7 +151,7 @@ function App() {
 
         <Row>
           <div className="footer">
-            Hosted by ESU3
+          Developed and supported by ESU #3 Information Systems & Technology.
           </div>
         </Row>
       </Container>
