@@ -21,7 +21,7 @@ jobs:
               run: npm run build --if-present
             - name: 'Run Tests'
               run: npm run test --if-present
-            - name: Post to a Slack channel
+            - name: 'Post build status Slack'
               id: slack
               uses: slackapi/slack-github-action@v1.24.0
               with:
@@ -35,13 +35,24 @@ jobs:
                 SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
             - name: 'Setup Pages'
               uses: actions/configure-pages@v3
-            - name: 'Upload artifact'
-              uses: actions/upload-artifact@v3
+            - name: Fix permissions
+              run: |
+                    chmod -c -R +rX "_site/" | while read line; do
+                    echo "::warning title=Invalid file permissions automatically fixed::$line"
+                    done
+            - name: Upload Pages artifact
+              uses: actions/upload-pages-artifact@v2
+            - name: 'Post artifact status Slack'
+              id: slack-artifact
+              uses: slackapi/slack-github-action@v1.24.0
               with:
-                path: ./dist/artifact.tar
-                #retention-days: ${{ inputs.retention-days }}
-                if-no-files-found: error
-      
+                # Slack channel id, channel name, or user id to post message.
+                # See also: https://api.slack.com/methods/chat.postMessage#channels
+                # You can pass in multiple channels to post to by providing a comma-delimited list of channel IDs.
+                channel-id: 'C05SM84462J'
+                # For posting a simple plain text message
+                slack-message: "GitHub artifact upload result: ${{ job.status }}\n"
+
     deploy:
       environment:
         name: github-pages
@@ -59,3 +70,13 @@ jobs:
         - name: Deploy to GitHub Pages
           id: deployment
           uses: actions/deploy-pages@v2
+        - name: 'Post deploy status Slack'
+          id: slack-deploy
+          uses: slackapi/slack-github-action@v1.24.0
+          with:
+            # Slack channel id, channel name, or user id to post message.
+            # See also: https://api.slack.com/methods/chat.postMessage#channels
+            # You can pass in multiple channels to post to by providing a comma-delimited list of channel IDs.
+            channel-id: 'C05SM84462J'
+            # For posting a simple plain text message
+            slack-message: "GitHub deploy result: ${{ job.status }}\n"
