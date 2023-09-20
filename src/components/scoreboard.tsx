@@ -43,6 +43,11 @@ export function Scoreboard() {
                     <Row>
                         <div className="btn-group" role="group">
                             <Button variant="outline-primary" className="btn btn-outline-primary"
+                                onClick={() => setScore1(score1 + 5)}
+                            >
+                                +5
+                            </Button>
+                            <Button variant="outline-primary" className="btn btn-outline-primary"
                                 onClick={() => setScore1(score1 + 1)}
                             >
                                 +1
@@ -73,6 +78,11 @@ export function Scoreboard() {
                     <h4>Score: {score2}</h4>
                     <Row>
                         <div className="btn-group" role="group">
+                            <Button variant="outline-primary" className="btn btn-outline-primary"
+                                onClick={() => setScore2(score2 + 5)}
+                            >
+                                +5
+                            </Button>
                             <Button variant="outline-primary" className="btn btn-outline-primary"
                                 onClick={() => setScore2(score2 + 1)}
                             >
