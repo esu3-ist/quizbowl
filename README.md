@@ -1,3 +1,8 @@
+# QuizBowl #
+
+Quizbowl timers and scorekeeping app.\
+The build is deployed to github pages [here](https://esu3-ist.github.io/quizbowl/)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
