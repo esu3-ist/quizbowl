@@ -33,26 +33,13 @@ jobs:
                 slack-message: "GitHub build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
               env:
                 SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-            - name: Archive artifact
-              shell: sh
-              if: runner.os == 'Linux'
-              run: |
-                tar \
-                  --dereference --hard-dereference \
-                  --directory "$INPUT_PATH" \
-                  -cvf "$RUNNER_TEMP/artifact.tar" \
-                  --exclude=.git \
-                  --exclude=.github \
-                  .
-              env:
-               INPUT_PATH: ${{ inputs.path }}
-      
-            - name: Upload artifact
+            - name: 'Setup Pages'
+              uses: actions/configure-pages@v3
+            - name: 'Upload artifact'
               uses: actions/upload-artifact@v3
               with:
-                name: ${{ inputs.name }}
-                path: ${{ runner.temp }}/artifact.tar
-                retention-days: ${{ inputs.retention-days }}
+                path: ./dist/artifact.tar
+                #retention-days: ${{ inputs.retention-days }}
                 if-no-files-found: error
       
     deploy:
