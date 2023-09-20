@@ -21,6 +21,11 @@ jobs:
               run: npm run build --if-present
             - name: 'Run Tests'
               run: npm run test --if-present
+            - uses: actions/upload-artifact@v3
+              with:
+                name: page
+                path: build
+                if-no-files-found: error
             - name: 'Post build status Slack'
               id: slack
               uses: slackapi/slack-github-action@v1.24.0
@@ -33,32 +38,13 @@ jobs:
                 slack-message: "GitHub build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
               env:
                 SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-            - name: 'Setup Pages'
-              uses: actions/configure-pages@v3
-            - name: Fix permissions
-              run: |
-                    chmod -c -R +rX "_site/" | while read line; do
-                    echo "::warning title=Invalid file permissions automatically fixed::$line"
-                    done
-            - name: Upload Pages artifact
-              uses: actions/upload-pages-artifact@v2
-            - name: 'Post artifact status Slack'
-              id: slack-artifact
-              uses: slackapi/slack-github-action@v1.24.0
-              with:
-                # Slack channel id, channel name, or user id to post message.
-                # See also: https://api.slack.com/methods/chat.postMessage#channels
-                # You can pass in multiple channels to post to by providing a comma-delimited list of channel IDs.
-                channel-id: 'C05SM84462J'
-                # For posting a simple plain text message
-                slack-message: "GitHub artifact upload result: ${{ job.status }}\n"
-
+            
     deploy:
+      runs-on: ubuntu-latest
+      needs: build
       environment:
         name: github-pages
         url: ${{ steps.deployment.outputs.page_url }}
-      runs-on: ubuntu-latest
-      needs: build
 
       # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
       permissions:
@@ -67,6 +53,16 @@ jobs:
 
 
       steps:
+        - uses: actions/download-artifact@master
+          with:
+            name: page
+            path: .
+        - name: 'Setup Pages'
+          uses: actions/configure-pages@v3
+        - name: 'Upload Artifact'
+          uses: actions/upload-pages-artifact@v2
+          with:
+            path: .
         - name: Deploy to GitHub Pages
           id: deployment
           uses: actions/deploy-pages@v2
