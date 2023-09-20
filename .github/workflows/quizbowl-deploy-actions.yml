@@ -76,3 +76,5 @@ jobs:
             channel-id: 'C05SM84462J'
             # For posting a simple plain text message
             slack-message: "GitHub deploy result: ${{ job.status }}\n"
+          env:
+            SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
