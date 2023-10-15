@@ -1,12 +1,18 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-function NameChange({oldName, newName, handleModal}) {
+interface NameChangeProps {
+  oldName: string;
+  newName: string;
+  handleModal: () => void;
+}
+
+const NameChange: React.FC<NameChangeProps> = ({oldName, newName, handleModal}) => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  //const handleShow = () => setShow(true);
 
   return (
     <>

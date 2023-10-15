@@ -1,7 +1,7 @@
 import { useTimer } from 'react-timer-hook';
 import Stack from 'react-bootstrap/Stack';
 
-export function Timer({ expiryTimestamp }) {
+export function Timer({ expiryTimestamp }: {expiryTimestamp: Date}) {
     const {
         seconds,
         minutes,
