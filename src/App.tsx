@@ -1,7 +1,4 @@
-// @ts-nocheck
-import React, { useState } from 'react';
-
-
+import React, { useEffect, useState } from 'react';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -9,19 +6,16 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Stack from 'react-bootstrap/Stack';
 import Modal from 'react-bootstrap/Modal';
-
 import { Timer } from './components/countdown-timer';
 import { Scoreboard } from './components/scoreboard';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
-
-
 import './App.css';
+import { useLocalStorage } from './useLocalStorage';
 
-const renderTime = ({ remainingTime }) => {
+function renderTime ({remainingTime}: {remainingTime: number}) {
   if (remainingTime === 0) {
-    return <div className="timer">Times Up!</div>;
+    return <div className="timer">Times Up!</div>
   }
 
   return (
@@ -31,26 +25,36 @@ const renderTime = ({ remainingTime }) => {
       <div className="text">seconds</div>
     </div>
   );
-};
+}
 
 function App() {
-  const [key, setKey] = useState(0);
-  const [play, setPlay] = useState(0);
-  const [key2, setKey2] = useState(0);
-  const [play2, setPlay2] = useState(0);
-
-  const [show, setShow] = useState(false);
-  const [roomName, setRoomName] = useState('Room Name');
+  const [key, setKey] = useState<number>(0);
+  const [play, setPlay] = useState<boolean>(false);
+  const [key2, setKey2] = useState<number>(0);
+  const [play2, setPlay2] = useState<boolean>(false);
+  const [show, setShow] = useState<boolean>(false);
+  const [roomName, setRoomName] = useState<string>(() => {
+    let saved: string = "";
+    if (localStorage["roomName"]) {
+      saved = JSON.parse(localStorage.getItem("roomName") || "");
+    }
+    return saved || "Room Name";
+  });
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  async function handleRestart(prevKey, timerNum) {
+  useEffect(() => {
+    localStorage.setItem("roomName", JSON.stringify(roomName));
+  }, [roomName]);
+  
+
+  async function handleRestart(prevKey: number, timerNum: number) {
     if (timerNum === 1){
-    setKey(prevKey = prevKey + 1);
+    setKey(prevKey + 1);
     setPlay(false);
     } else {
-    setKey2(prevKey = prevKey + 1);
+    setKey2(prevKey + 1);
     setPlay2(false);
     }    
   }

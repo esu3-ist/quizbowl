@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
+import { useLocalStorage } from '../useLocalStorage';
+
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
@@ -14,8 +16,28 @@ export function Scoreboard() {
     const [score1, setScore1] = useState(0);
     const [score2, setScore2] = useState(0);
 
-    const [team1, setTeamName1] = useState('Team Name1');
-    const [team2, setTeamName2] = useState('Team Name2');
+    const [team1, setTeamName1] = useState<string>(() => {
+        let saved: string = "";
+        if (localStorage["team1"]) {
+          saved = JSON.parse(localStorage.getItem("team1") || "");
+        }
+        return saved || "Team Name1";
+      });
+      useEffect(() => {
+        localStorage.setItem("team1", JSON.stringify(team1));
+      }, [team1]);
+
+    const [team2, setTeamName2] = useState<string>(() => {
+    let saved: string = "";
+    if (localStorage["team2"]) {
+      saved = JSON.parse(localStorage.getItem("team2") || "");
+    }
+    return saved || "Team Name2";
+  });
+
+  useEffect(() => {
+    localStorage.setItem("team2", JSON.stringify(team2));
+  }, [team2]);
 
     const [show1, setShow1] = useState(false);
     const [show2, setShow2] = useState(false);
