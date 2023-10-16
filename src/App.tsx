@@ -11,7 +11,6 @@ import { Scoreboard } from './components/scoreboard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import './App.css';
-import { useLocalStorage } from './useLocalStorage';
 
 function renderTime ({remainingTime}: {remainingTime: number}) {
   if (remainingTime === 0) {
