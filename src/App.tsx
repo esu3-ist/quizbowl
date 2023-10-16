@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -11,6 +11,7 @@ import { Scoreboard } from './components/scoreboard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import './App.css';
+import { useLocalStorage } from './useLocalStorage';
 
 function renderTime ({remainingTime}: {remainingTime: number}) {
   if (remainingTime === 0) {
@@ -32,10 +33,21 @@ function App() {
   const [key2, setKey2] = useState<number>(0);
   const [play2, setPlay2] = useState<boolean>(false);
   const [show, setShow] = useState<boolean>(false);
-  const [roomName, setRoomName] = useState<string>('Room Name');
+  const [roomName, setRoomName] = useState<string>(() => {
+    let saved: string = "";
+    if (localStorage["roomName"]) {
+      saved = JSON.parse(localStorage.getItem("roomName") || "");
+    }
+    return saved || "Room Name";
+  });
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  useEffect(() => {
+    localStorage.setItem("roomName", JSON.stringify(roomName));
+  }, [roomName]);
+  
 
   async function handleRestart(prevKey: number, timerNum: number) {
     if (timerNum === 1){
