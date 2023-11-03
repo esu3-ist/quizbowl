@@ -16,12 +16,20 @@ import { Scoreboard } from './components/scoreboard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 
+import timeSfx from './components/assets/audio/timesup.flac';
 
 import './App.css';
 
-const renderTime = ({ remainingTime }) => {
+
+const RenderTime = ({ remainingTime }) => {
   if (remainingTime === 0) {
-    return <div className="timer">Times Up!</div>;
+    const playAudio = <audio src={timeSfx} autoPlay/>;
+    return (
+      <div>
+        <div className="timer">Times Up!</div>
+        {playAudio}
+      </div>
+    )
   }
 
   return (
@@ -99,7 +107,7 @@ function App() {
                   colorsTime={[20, 15, 10, 0]}
                   onComplete={() => ({ shouldRepeat: false, delay: 1 })}
                 >
-                  {renderTime}
+                  {RenderTime}
                 </CountdownCircleTimer>
                 <div className="ms-4">
                 <Stack direction="horizontal" gap={1}>
@@ -125,7 +133,7 @@ function App() {
                   colorsTime={[10, 6, 3, 0]}
                   onComplete={() => ({ shouldRepeat: false, delay: 1 })}
                 >
-                  {renderTime}
+                  {RenderTime}
                 </CountdownCircleTimer>
                 <div className="ms-4">
                 <Stack direction="horizontal" gap={1}>
