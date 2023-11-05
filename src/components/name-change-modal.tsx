@@ -16,7 +16,6 @@ const NameChange: React.FC<NameChangeProps> = ({oldName, newName, handleModal}) 
 
   return (
     <>
-
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Modal heading</Modal.Title>
