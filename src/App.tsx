@@ -19,8 +19,8 @@ const RenderTime = ({remainingTime}:{remainingTime: number}) => {
     const playAudio = <audio src={timeSfx} autoPlay/>;
     return (
       <div>
-        <div className="timer">Times Up!</div>
         {playAudio}
+        <div className="timer">Times Up!</div>
       </div>
     )
   }
@@ -37,8 +37,8 @@ const RenderTime = ({remainingTime}:{remainingTime: number}) => {
 function App() {
   const [key, setKey] = useState<number>(0);
   const [play, setPlay] = useState<boolean>(false);
-  const [key2, setKey2] = useState<number>(0);
-  const [play2, setPlay2] = useState<boolean>(false);
+  const [tenKey, setTenKey] = useState<number>(0);
+  const [tenPlay, setTenPlay] = useState<boolean>(false);
   const [show, setShow] = useState<boolean>(false);
   const [roomName, setRoomName] = useState<string>(() => {
     let saved: string = "";
@@ -56,15 +56,11 @@ function App() {
   }, [roomName]);
   
 
-  async function handleRestart(prevKey: number, timerNum: number) {
-    if (timerNum === 1){
+  function handleRestart(prevKey: number, timerNum: number) {
     setKey(prevKey + 1);
     setPlay(false);
-    } else {
-    setKey2(prevKey + 1);
-    setPlay2(false);
-    }    
   }
+
 
   const time = new Date();
   time.setSeconds(time.getSeconds() + 900); // 15 minutes timer
@@ -129,8 +125,8 @@ function App() {
             <Col className="text-center justify-content-center">
               <Stack gap={3}>
                 <CountdownCircleTimer
-                  key={key2}
-                  isPlaying={play2}
+                  key={tenKey}
+                  isPlaying={tenPlay}
                   duration={10}
                   colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
                   colorsTime={[10, 6, 3, 0]}
@@ -140,10 +136,10 @@ function App() {
                 </CountdownCircleTimer>
                 <div className="ms-4">
                 <Stack direction="horizontal" gap={1}>
-                  <button onClick={() => !play2 ? setPlay2(true) : setPlay2(false)}>
-                    {play2 ? "Pause" : "Start"}
+                  <button onClick={() => !tenPlay ? setTenPlay(true) : setTenPlay(false)}>
+                    {tenPlay ? "Pause" : "Start"}
                   </button>
-                  <button onClick={() => handleRestart(key, 2)}>
+                  <button onClick={() => setTenKey(prevKey => prevKey + 3)}>
                     Restart
                   </button>      
                 </Stack>
