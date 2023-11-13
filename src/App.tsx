@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import './App.css';
 
-const timeSfx = require('./components/assets/audio/timesup.flac');
+const timeSfx = require('./components/assets/audio/timesup.mp3');
 
 const RenderTime = ({remainingTime}:{remainingTime: number}) => {
   if (remainingTime === 0) {
