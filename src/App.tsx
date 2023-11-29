@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -12,14 +12,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import './App.css';
 
-const timeSfx = require('./components/assets/audio/timesup.mp3');
+const timeSfx = require('./components/assets/audio/timesup-new.mp3');
 
-const RenderTime = ({remainingTime}:{remainingTime: number}) => {
+const renderTimer = ({remainingTime}:{remainingTime: number}) => {
   if (remainingTime === 0) {
-    const playAudio = <audio src={timeSfx} autoPlay/>;
     return (
       <div>
-        {playAudio}
         <div className="timer">Times Up!</div>
       </div>
     )
@@ -48,6 +46,14 @@ function App() {
     return saved || "Room Name";
   });
 
+  // Audio
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  let audioTest = new Audio('/quizbowl/static/media/timesup-new.d35b1c7590e69dbfdb3a.mp3');
+  const playAudio = () => {
+    audioTest.play();
+  }
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -55,12 +61,15 @@ function App() {
     localStorage.setItem("roomName", JSON.stringify(roomName));
   }, [roomName]);
   
-
-  function handleRestart(prevKey: number, timerNum: number) {
+  function handleRestart(prevKey: number) {
     setKey(prevKey + 1);
     setPlay(false);
   }
 
+  function handleTenRestart(prevKey: number) {
+    setTenKey(prevKey + 3);
+    setTenPlay(false);
+  }
 
   const time = new Date();
   time.setSeconds(time.getSeconds() + 900); // 15 minutes timer
@@ -68,6 +77,9 @@ function App() {
   return (
     <div className="App">
       <Container className="p-1">
+        <div>
+        <audio src={timeSfx} ref={audioRef} />
+        </div>
         <h1 className="header">
           QuizBowl
         </h1>
@@ -104,16 +116,19 @@ function App() {
                   duration={20}
                   colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
                   colorsTime={[20, 15, 10, 0]}
-                  onComplete={() => ({ shouldRepeat: false, delay: 1 })}
+                  onComplete={() => {
+                    playAudio();
+                    return { shouldRepeat: false, delay: .25 }
+                  }}
                 >
-                  {RenderTime}
+                    {renderTimer} 
                 </CountdownCircleTimer>
                 <div className="ms-4">
                 <Stack direction="horizontal" gap={1}>
                   <button onClick={() => !play ? setPlay(true) : setPlay(false)}>
                     {play ? "Pause" : "Start"}
                   </button>
-                  <button onClick={() => handleRestart(key, 1)}>
+                  <button onClick={() => handleRestart(key)}>
                     Restart
                   </button>      
                 </Stack>
@@ -130,16 +145,19 @@ function App() {
                   duration={10}
                   colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
                   colorsTime={[10, 6, 3, 0]}
-                  onComplete={() => ({ shouldRepeat: false, delay: 1 })}
+                  onComplete={() => {
+                    playAudio();
+                    return { shouldRepeat: false, delay: .25 }
+                  }}
                 >
-                  {RenderTime}
+                  {renderTimer}
                 </CountdownCircleTimer>
                 <div className="ms-4">
                 <Stack direction="horizontal" gap={1}>
                   <button onClick={() => !tenPlay ? setTenPlay(true) : setTenPlay(false)}>
                     {tenPlay ? "Pause" : "Start"}
                   </button>
-                  <button onClick={() => setTenKey(prevKey => prevKey + 3)}>
+                  <button onClick={() => handleTenRestart(tenKey)}>
                     Restart
                   </button>      
                 </Stack>
