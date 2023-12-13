@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import './App.css';
 
-const timeSfx = require('./components/assets/audio/timesup-new.mp3');
+const timeSfx = require('./components/assets/audio/buzzer.mp3');
 
 const renderTimer = ({remainingTime}:{remainingTime: number}) => {
   if (remainingTime === 0) {
@@ -49,7 +49,7 @@ function App() {
   // Audio
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  let audioTest = new Audio('/quizbowl/static/media/timesup-new.d35b1c7590e69dbfdb3a.mp3');
+  let audioTest = new Audio('/quizbowl/static/media/buzzer.245d10f4025d5aaa17b0.mp3');
   const playAudio = () => {
     audioTest.play();
   }
