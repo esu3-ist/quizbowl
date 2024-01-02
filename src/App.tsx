@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import './App.css';
 
-const timeSfx = require('./components/assets/audio/buzzer.mp3');
+const shortTimeSfx = require('./components/assets/audio/buzzer.mp3');
 
 const renderTimer = ({remainingTime}:{remainingTime: number}) => {
   if (remainingTime === 0) {
@@ -47,11 +47,11 @@ function App() {
   });
 
   // Audio
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const shortAudioRef = useRef<HTMLAudioElement>(null);
 
-  let audioTest = new Audio('/quizbowl/static/media/buzzer.245d10f4025d5aaa17b0.mp3');
+  let shortAudio = new Audio('/quizbowl/static/media/buzzer.245d10f4025d5aaa17b0.mp3');
   const playAudio = () => {
-    audioTest.play();
+    shortAudio.play();
   }
 
   const handleClose = () => setShow(false);
@@ -72,13 +72,13 @@ function App() {
   }
 
   const time = new Date();
-  time.setSeconds(time.getSeconds() + 900); // 15 minutes timer
+  time.setSeconds(time.getSeconds() + 900); //900 = 15 minutes timer
 
   return (
     <div className="App">
       <Container className="p-1">
         <div>
-        <audio src={timeSfx} ref={audioRef} />
+        <audio src={shortTimeSfx} ref={shortAudioRef} />
         </div>
         <h1 className="header">
           QuizBowl
