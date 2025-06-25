@@ -1,16 +1,17 @@
 import { useTimer } from 'react-timer-hook';
 import Stack from 'react-bootstrap/Stack';
-import { useRef } from 'react';
+import { useRef, useMemo } from 'react';
 
-const longTimeSfx = require('./assets/audio/short-nuisance-alarm-long-modified.mp3');
+import longTimeSfx from './assets/audio/short-nuisance-alarm-long-modified.mp3';
 
 export function Timer({ expiryTimestamp }: {expiryTimestamp: Date}) {
     const longAudioRef = useRef<HTMLAudioElement>(null);
 
-    let longAudio = new Audio('/quizbowl/static/media/short-nuisance-alarm-long-modified.fce1f3ee839591ae86b5.mp3');
+    let longAudio = useMemo(() => new Audio(longTimeSfx), []);
     const playLongAudio = () => {
-      longAudio.play();
-    }  
+        longAudio.currentTime = 0; // Reset audio to start
+        longAudio.play().catch(err => console.warn('Audio blocked', err));
+    }
 
     const {
         seconds,
