@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -12,7 +12,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import './App.css';
 
-const shortTimeSfx = require('./components/assets/audio/buzzer.mp3');
+import shortTimeSfx  from './components/assets/audio/buzzer.mp3';
+import fiveSecondSfx from './components/assets/audio/five-seconds-v2.mp3';
 //testing gpg signing
 const renderTimer = ({remainingTime}:{remainingTime: number}) => {
   if (remainingTime === 0) {
@@ -49,9 +50,16 @@ function App() {
   // Audio
   const shortAudioRef = useRef<HTMLAudioElement>(null);
 
-  let shortAudio = new Audio('/quizbowl/static/media/buzzer.245d10f4025d5aaa17b0.mp3');
+  let shortAudio = useMemo(() => new Audio(shortTimeSfx), []);
   const playAudio = () => {
-    shortAudio.play();
+    shortAudio.currentTime = 0; // Reset audio to start
+    shortAudio.play().catch(err => console.warn('Audio blocked', err));
+  }
+
+  let warnAudio = useMemo(() => new Audio(fiveSecondSfx), []);
+  const playWarnAudio = () => {
+    warnAudio.currentTime = 0; // Reset audio to start
+    warnAudio.play().catch(err => console.warn('Audio blocked', err));
   }
 
   const handleClose = () => setShow(false);
@@ -116,6 +124,11 @@ function App() {
                   duration={20}
                   colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
                   colorsTime={[20, 15, 10, 0]}
+                  onUpdate={(remainingTime) => {
+                    if (remainingTime === 6) {
+                        playWarnAudio();
+                        }
+                  }}
                   onComplete={() => {
                     playAudio();
                     return { shouldRepeat: false, delay: .25 }
@@ -123,6 +136,7 @@ function App() {
                 >
                     {renderTimer} 
                 </CountdownCircleTimer>
+
                 <div className="ms-4">
                 <Stack direction="horizontal" gap={1}>
                   <button onClick={() => !play ? setPlay(true) : setPlay(false)}>
