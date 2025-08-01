@@ -159,6 +159,11 @@ function App() {
                   duration={10}
                   colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
                   colorsTime={[10, 6, 3, 0]}
+                  onUpdate={(remainingTime) => {
+                    if (remainingTime === 6) {
+                        playWarnAudio();
+                        }
+                  }}
                   onComplete={() => {
                     playAudio();
                     return { shouldRepeat: false, delay: .25 }
